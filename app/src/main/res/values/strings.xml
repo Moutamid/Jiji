@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AutoFix</string>
+    <string name="loading">Please wait...</string>
+</resources>
