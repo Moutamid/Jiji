@@ -31,7 +31,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public int CODE_TAX_CTF = 1235;
     public int CODE_REGISTRATION_CTF = 1236;
 
-    private RegistrationController controller;
+    public RegistrationController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +96,8 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         b.doneBtn.setOnClickListener(view -> {
-            if (REGISTER_TYPE.equals(Constants.SIGN_UP)){
-                // SIGN UP
-                if (model.isEveryThingCompleted()){
-                    controller.signUp();
-                }
-
-            }else {
-                // LOGIN
-
+            if (model.isEveryThingCompleted()) {
+                model.getUserLocation();
             }
         });
 
@@ -119,7 +112,6 @@ public class RegistrationActivity extends AppCompatActivity {
         if (requestCode == CODE_ID_CARD || requestCode == CODE_TAX_CTF
                 || requestCode == CODE_REGISTRATION_CTF && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
-            b.idCardTextView.setText(imageUri.getLastPathSegment());
             controller.uploadImage(requestCode, imageUri);
         }
     }

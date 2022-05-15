@@ -13,6 +13,7 @@ public class Constants {
     public static final String TYPE_BUYER = "type_buyer";
     public static final String LOGIN = "login";
     public static final String SIGN_UP = "sign_up";
+    public static final String USERS = "users";
 
     public static FirebaseAuth auth() {
         return FirebaseAuth.getInstance();
