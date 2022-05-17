@@ -14,10 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jiji">
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".bottomnavigationactivity.BottomNavigationActivity"
+            android:exported="true"
+            android:label="@string/title_activity_bottom_navigation" />
+        <activity
+            android:name=".bottomnavigationactivity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,8 +31,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

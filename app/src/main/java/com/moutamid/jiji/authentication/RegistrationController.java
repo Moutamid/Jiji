@@ -4,7 +4,6 @@ import static com.moutamid.jiji.utils.Stash.toast;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.moutamid.jiji.home.HomeActivity;
+import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
 import com.moutamid.jiji.utils.Constants;
 
 public class RegistrationController {

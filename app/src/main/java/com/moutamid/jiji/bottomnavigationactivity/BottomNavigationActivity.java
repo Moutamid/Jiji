@@ -1,4 +1,4 @@
-package com.moutamid.jiji.authentication;
+package com.moutamid.jiji.bottomnavigationactivity;
 
 import static com.moutamid.jiji.utils.Stash.toast;
 
@@ -7,19 +7,25 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -27,99 +33,73 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.moutamid.jiji.BuildConfig;
-import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
+import com.moutamid.jiji.R;
+import com.moutamid.jiji.databinding.ActivityBottomNavigationBinding;
 import com.moutamid.jiji.utils.Constants;
-import com.moutamid.jiji.utils.Stash;
 
-public class RegistrationModel {
+public class BottomNavigationActivity extends AppCompatActivity {
 
-    private RegistrationActivity activity;
+    private ActivityBottomNavigationBinding binding;
 
-    public RegistrationModel(RegistrationActivity activity) {
-        this.activity = activity;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        binding = ActivityBottomNavigationBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        BottomNavigationView navView = findViewById(com.moutamid.jiji.R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_favourite, R.id.navigation_sell)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_bottom_navigation);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.navView, navController);
+
+        getUserLocation();
     }
-
-    public boolean isEveryThingCompleted() {
-        if (activity.b.emailEditText.getText().toString().isEmpty()) {
-            toast("Email is empty!");
-            return false;
-        }
-        if (activity.b.passwordEditText.getText().toString().isEmpty()) {
-            toast("Password is empty!");
-            return false;
-        }
-
-        if (activity.REGISTER_TYPE.equals(Constants.SIGN_UP)) {
-
-            if (activity.b.nameEditText.getText().toString().isEmpty()) {
-                toast("Name is empty!");
-                return false;
-            }
-
-            if (activity.b.numberEditText.getText().toString().isEmpty()) {
-                toast("Number is empty!");
-                return false;
-            }
-
-            if (activity.userModel.user_type.equals(Constants.TYPE_SELLER)) {
-                if (activity.userModel.id_card_link == null) {
-                    toast("Please upload a id card!");
-                    return false;
-                }
-                if (activity.userModel.tax_certificate_link == null) {
-                    toast("Please upload a tax certificate!");
-                    return false;
-                }
-
-            }
-        }
-
-        return true;
-    }
-
     public void getUserLocation() {
-        Dexter.withActivity(activity)
+        Dexter.withActivity(BottomNavigationActivity.this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        Dexter.withActivity(activity)
+                        Dexter.withActivity(BottomNavigationActivity.this)
                                 .withPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                                 .withListener(new PermissionListener() {
                                     @Override
                                     public void onPermissionGranted(PermissionGrantedResponse response) {
                                         FusedLocationProviderClient fusedLocationProviderClient;
                                         LocationRequest locationRequest;
-                                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
+                                        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BottomNavigationActivity.this);
 
                                         locationRequest = LocationRequest.create();
                                         locationRequest.setInterval(500);
                                         locationRequest.setFastestInterval(500);
                                         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-                                        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                        if (ActivityCompat.checkSelfPermission(BottomNavigationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(BottomNavigationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                             toast("Permission not granted!");
                                             return;
                                         }
-                                        activity.progressDialog.show();
+
                                         Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
                                         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
                                             @Override
                                             public void onSuccess(Location location) {
-                                                activity.userModel.current_location = new LatLng(location.getLatitude(), location.getLongitude());
-                                                if (activity.REGISTER_TYPE.equals(Constants.SIGN_UP)) {
-                                                    // SIGN UP
-                                                    activity.controller.signUp();
-                                                } else {
-                                                    // LOGIN
-                                                    activity.controller.login();
-                                                }
+                                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                                Constants.databaseReference()
+                                                        .child(Constants.USERS)
+                                                        .child(Constants.auth().getUid())
+                                                        .child("current_location")
+                                                        .setValue(latLng);
                                             }
                                         });
                                         locationTask.addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                activity.progressDialog.dismiss();
                                                 toast(e.getMessage().toString());
                                             }
                                         });
@@ -139,7 +119,7 @@ public class RegistrationModel {
                                                     BuildConfig.APPLICATION_ID, null);
                                             intent.setData(uri);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            activity.startActivity(intent);
+                                            startActivity(intent);
                                         }
                                     }
 
@@ -165,7 +145,7 @@ public class RegistrationModel {
                                     BuildConfig.APPLICATION_ID, null);
                             intent.setData(uri);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            activity.startActivity(intent);
+                            startActivity(intent);
                         }
                     }
 
@@ -175,31 +155,5 @@ public class RegistrationModel {
                     }
                 }).check();
 
-    }
-
-    public void uploadUserDetails() {
-        activity.userModel.name = activity.b.nameEditText.getText().toString();
-        activity.userModel.number = activity.b.numberEditText.getText().toString();
-        activity.userModel.email = activity.b.emailEditText.getText().toString();
-
-        Stash.put(Constants.USER_NUMBER, activity.userModel.number);
-
-        Constants.databaseReference()
-                .child(Constants.USERS)
-                .child(Constants.auth().getUid())
-                .setValue(activity.userModel)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        activity.progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            toast("Sign up success!");
-                            activity.finish();
-                            activity.startActivity(new Intent(activity, HomeActivity.class));
-                        } else {
-                            toast(task.getException().getMessage());
-                        }
-                    }
-                });
     }
 }

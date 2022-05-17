@@ -1,4 +1,4 @@
-package com.moutamid.jiji.home;
+package com.moutamid.jiji.bottomnavigationactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
