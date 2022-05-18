@@ -12,6 +12,7 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -44,10 +45,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityBottomNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         BottomNavigationView navView = findViewById(com.moutamid.jiji.R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -55,11 +55,12 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 R.id.navigation_home, R.id.navigation_favourite, R.id.navigation_sell)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_bottom_navigation);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         getUserLocation();
     }
+
     public void getUserLocation() {
         Dexter.withActivity(BottomNavigationActivity.this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)

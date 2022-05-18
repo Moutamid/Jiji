@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.moutamid.jiji.R;
@@ -65,6 +66,7 @@ public class SellFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int position) {
                     productModel.category = items[position].toString();
+                    b.categoryText.setText(items[position].toString());
                 }
             });
 
@@ -92,6 +94,10 @@ public class SellFragment extends Fragment {
 
                                     toast("Success!");
                                     requireActivity().recreate();
+                                    b.conditionEt.setText("");
+                                    b.nameEt.setText("");
+                                    b.descriptionEt.setText("");
+                                    b.priceEt.setText("");
 
                                 } else toast(task.getException().getMessage());
                             }
