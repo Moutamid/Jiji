@@ -6,6 +6,8 @@ import static com.moutamid.jiji.utils.Stash.toast;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +26,9 @@ import com.moutamid.jiji.R;
 import com.moutamid.jiji.databinding.FragmentSellBinding;
 import com.moutamid.jiji.model.ProductModel;
 import com.moutamid.jiji.utils.Constants;
+
+import java.util.List;
+import java.util.Locale;
 
 public class SellFragment extends Fragment {
 

@@ -27,6 +27,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.moutamid.jiji.BuildConfig;
+import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
@@ -195,7 +196,7 @@ public class RegistrationModel {
                         if (task.isSuccessful()) {
                             toast("Sign up success!");
                             activity.finish();
-                            activity.startActivity(new Intent(activity, HomeActivity.class));
+                            activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
                         } else {
                             toast(task.getException().getMessage());
                         }

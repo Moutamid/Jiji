@@ -34,6 +34,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.moutamid.jiji.BuildConfig;
+import com.moutamid.jiji.MainActivity;
 import com.moutamid.jiji.R;
 import com.moutamid.jiji.databinding.ActivityBottomNavigationBinding;
 import com.moutamid.jiji.utils.Constants;
@@ -48,6 +49,13 @@ public class BottomNavigationActivity extends AppCompatActivity {
         binding = ActivityBottomNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        if (Constants.auth().getCurrentUser() == null){
+            startActivity(new Intent(BottomNavigationActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
+
         BottomNavigationView navView = findViewById(com.moutamid.jiji.R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

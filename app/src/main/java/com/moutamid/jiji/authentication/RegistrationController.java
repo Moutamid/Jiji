@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
 import com.moutamid.jiji.utils.Constants;
 
@@ -100,7 +101,7 @@ public class RegistrationController {
                         if (task.isSuccessful()) {
                             toast("Login success!");
                             activity.finish();
-                            activity.startActivity(new Intent(activity, HomeActivity.class));
+                            activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
                         } else {
                             toast(task.getException().getMessage());
                         }

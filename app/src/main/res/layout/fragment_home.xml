@@ -2,9 +2,10 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#337B83A9"
+    android:background="#1A7B83A9"
     tools:context=".bottomnavigationactivity.ui.home.HomeFragment">
 
     <LinearLayout
@@ -108,21 +109,25 @@
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/trendBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/grey"
                 app:cardCornerRadius="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginVertical="10dp"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_baseline_menu_24" />
+                        android:src="@drawable/ic_baseline_local_fire_department_24"
+                        app:tint="@color/red" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -136,6 +141,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/productsBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
@@ -146,26 +152,30 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginVertical="10dp"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_baseline_menu_24" />
+                        android:src="@drawable/ic_baseline_products_24"
+                        app:tint="@color/default_green" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
-                        android:text="Trend" />
+                        android:text="Products" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/servicesCatBtn"
                 android:layout_width="0dp"
+                android:layout_marginEnd="5dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:cardBackgroundColor="@color/white"
@@ -173,20 +183,22 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_marginVertical="10dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_baseline_menu_24" />
+                        android:src="@drawable/ic_baseline_services_24"
+                        app:tint="@color/darkBlue" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
-                        android:text="Trend" />
+                        android:text="Services" />
 
                 </LinearLayout>
 
@@ -211,9 +223,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trendingRecyclerView"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
         <View
             android:layout_width="match_parent"

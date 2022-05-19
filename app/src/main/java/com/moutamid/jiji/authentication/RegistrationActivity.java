@@ -25,7 +25,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public UserModel userModel = new UserModel();
     public RegistrationModel model;
-    public String REGISTER_TYPE = Constants.LOGIN;
+    public String REGISTER_TYPE = Constants.SIGN_UP;
 
     public int CODE_ID_CARD = 1234;
     public int CODE_TAX_CTF = 1235;

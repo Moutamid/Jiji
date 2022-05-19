@@ -2,16 +2,22 @@ package com.moutamid.jiji.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.moutamid.jiji.model.LatLng2;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class Stash {
@@ -247,6 +253,38 @@ public class Stash {
     public static void removeListener(StashListener listener) {
         checkfornull();
         stash.sp.unregisterOnSharedPreferenceChangeListener(listener);
+    }
+
+    public static String getCityName(LatLng2 latLng) {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(instance, Locale.getDefault());
+
+        String city = Constants.NULL;
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            city = addresses.get(0).getLocality();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return city;
+    }
+
+    public static String getAddress(LatLng2 latLng) {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(instance, Locale.getDefault());
+
+        String address = Constants.NULL;
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            address = addresses.get(0).getAddressLine(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return address;
     }
 
     private static class GenericType implements ParameterizedType {

@@ -2,7 +2,7 @@ package com.moutamid.jiji.bottomnavigationactivity.ui.sell;
 
 import static com.moutamid.jiji.utils.Stash.toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.moutamid.jiji.model.LatLng2;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
@@ -14,7 +14,9 @@ public class SellModel {
     }
 
     public boolean isEveryThingCompleted() {
-        fragment.productModel.location = (LatLng) Stash.getObject(Constants.USER_LOCATION, LatLng.class);
+        fragment.productModel.location = (LatLng2) Stash.getObject(Constants.USER_LOCATION, LatLng2.class);
+        fragment.productModel.city = Stash.getCityName(fragment.productModel.location);
+        fragment.productModel.address = Stash.getAddress(fragment.productModel.location);
         fragment.productModel.number = Stash.getString(Constants.USER_NUMBER);
         fragment.productModel.uid = Constants.auth().getUid();
 

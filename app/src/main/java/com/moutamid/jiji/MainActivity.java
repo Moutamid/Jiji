@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         b = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         b.buyerBtn.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, RegistrationActivity.class)
                     .putExtra(Constants.PARAMS, Constants.TYPE_BUYER));
