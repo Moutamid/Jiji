@@ -66,7 +66,10 @@ public class SellFragment extends Fragment {
             AlertDialog dialog;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            final CharSequence[] items = {"NA", "NI", "NO", "NR", "NB", "CB", "CDBP", "AM", "WN", "SOSO"};
+            final CharSequence[] items = {
+                    "Toyota", "Nissan", "Honda", "Mazda", "Suzuki",
+                    "BMW", "LEXUS", "AUDI", "Land rover", "Mercedes Benz", "Mitsubishi", "Isuzu", "Hino",
+                    "Chevloret", "Volkswagen", "Jeep", "Subaru", "Porsche"};
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int position) {

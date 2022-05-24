@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.jiji.R;
+import com.moutamid.jiji.activities.ItemActivity;
 import com.moutamid.jiji.databinding.FragmentHomeBinding;
 import com.moutamid.jiji.model.ProductModel;
 import com.moutamid.jiji.utils.Constants;
@@ -93,6 +94,7 @@ public class HomeFragment extends Fragment {
                             tasksArrayList.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 ProductModel productModel = dataSnapshot.getValue(ProductModel.class);
+                                productModel.pushKey = dataSnapshot.getKey();
                                 tasksArrayList.add(productModel);
                             }
 
@@ -169,6 +171,7 @@ public class HomeFragment extends Fragment {
 
             holder.chatBtn.setOnClickListener(view -> {
                 toast("Coming soon!");
+                startActivity(new Intent(requireContext(), ItemActivity.class));
             });
 
             holder.callBtn.setOnClickListener(view -> {
