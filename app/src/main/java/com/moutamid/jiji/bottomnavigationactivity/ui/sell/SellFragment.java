@@ -1,13 +1,10 @@
 package com.moutamid.jiji.bottomnavigationactivity.ui.sell;
 
 import static android.app.Activity.RESULT_OK;
-
 import static com.moutamid.jiji.utils.Stash.toast;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,16 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.moutamid.jiji.R;
 import com.moutamid.jiji.databinding.FragmentSellBinding;
 import com.moutamid.jiji.model.ProductModel;
+import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
-
-import java.util.List;
-import java.util.Locale;
+import com.moutamid.jiji.utils.Stash;
 
 public class SellFragment extends Fragment {
 
@@ -70,6 +65,7 @@ public class SellFragment extends Fragment {
                     "Toyota", "Nissan", "Honda", "Mazda", "Suzuki",
                     "BMW", "LEXUS", "AUDI", "Land rover", "Mercedes Benz", "Mitsubishi", "Isuzu", "Hino",
                     "Chevloret", "Volkswagen", "Jeep", "Subaru", "Porsche"};
+
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int position) {
@@ -88,6 +84,8 @@ public class SellFragment extends Fragment {
 
         b.postBtn.setOnClickListener(view -> {
             if (model.isEveryThingCompleted()) {
+                UserModel userModel = (UserModel) Stash.getObject(Constants.CURRENT_USER_MODEL, UserModel.class);
+                productModel.postedBy = userModel.name;
                 controller.progressDialog.show();
                 Constants.databaseReference()
                         .child(productModel.type)

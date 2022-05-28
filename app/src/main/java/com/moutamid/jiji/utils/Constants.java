@@ -18,6 +18,10 @@ public class Constants {
     public static final String TYPE_SERVICE = "type_service";
     public static final String USER_LOCATION = "user_location";
     public static final String USER_NUMBER = "user_number";
+    public static final String CURRENT_PRODUCT = "current_product";
+    public static final String STAR_COUNT = "star_count";
+    public static final String CURRENT_USER_MODEL = "current_user_model";
+    public static final String STARS = "stars";
 
     public static FirebaseAuth auth() {
         return FirebaseAuth.getInstance();

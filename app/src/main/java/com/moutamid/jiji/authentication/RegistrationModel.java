@@ -184,6 +184,7 @@ public class RegistrationModel {
         activity.userModel.email = activity.b.emailEditText.getText().toString();
 
         Stash.put(Constants.USER_NUMBER, activity.userModel.number);
+        Stash.put(Constants.CURRENT_USER_MODEL, activity.userModel);
 
         Constants.databaseReference()
                 .child(Constants.USERS)

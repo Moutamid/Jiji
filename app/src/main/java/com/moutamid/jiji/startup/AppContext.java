@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.jiji.model.LatLng2;
 import com.moutamid.jiji.utils.Constants;
@@ -20,7 +21,7 @@ public class AppContext extends Application {
 
         if (Constants.auth().getCurrentUser() == null)
             return;
-
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Constants.databaseReference()
                 .child(Constants.USERS)
                 .child(Constants.auth().getUid())

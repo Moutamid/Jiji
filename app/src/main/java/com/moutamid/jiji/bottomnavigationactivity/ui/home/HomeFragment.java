@@ -25,14 +25,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.jiji.R;
+import com.moutamid.jiji.activities.ConversationActivity;
 import com.moutamid.jiji.activities.ItemActivity;
 import com.moutamid.jiji.databinding.FragmentHomeBinding;
 import com.moutamid.jiji.model.ProductModel;
+import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
+import com.moutamid.jiji.utils.Stash;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,7 +174,17 @@ public class HomeFragment extends Fragment {
             holder.number.setText(productModel.number);
 
             holder.chatBtn.setOnClickListener(view -> {
-                toast("Coming soon!");
+
+                Intent intent = new Intent(requireContext(), ConversationActivity.class);
+                intent.putExtra("first", true);
+                intent.putExtra("name", productModel.postedBy);
+                intent.putExtra("uid", productModel.uid);
+
+                startActivity(intent);
+            });
+
+            holder.cardView.setOnClickListener(view -> {
+                Stash.put(Constants.CURRENT_PRODUCT, productModel);
                 startActivity(new Intent(requireContext(), ItemActivity.class));
             });
 
@@ -178,6 +192,7 @@ public class HomeFragment extends Fragment {
                 Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + productModel.number));
                 startActivity(intentDial);
             });
+
         }
 
         @Override
@@ -192,6 +207,7 @@ public class HomeFragment extends Fragment {
             ImageView imageView;
             TextView title, city, number;
             LinearLayout chatBtn, callBtn;
+            MaterialCardView cardView;
 
             public ViewHolderRightMessage(@NonNull View v) {
                 super(v);
@@ -201,6 +217,7 @@ public class HomeFragment extends Fragment {
                 number = v.findViewById(R.id.number);
                 chatBtn = v.findViewById(R.id.chatBtn);
                 callBtn = v.findViewById(R.id.callBtn);
+                cardView = v.findViewById(R.id.layoutItemProduct);
             }
         }
 
