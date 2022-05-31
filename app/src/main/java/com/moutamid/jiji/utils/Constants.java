@@ -22,6 +22,9 @@ public class Constants {
     public static final String STAR_COUNT = "star_count";
     public static final String CURRENT_USER_MODEL = "current_user_model";
     public static final String STARS = "stars";
+    public static final String TYPE_NAME = "type_name";
+    public static final String TYPE_NUMBER = "type_number";
+    public static final String TYPE_EMAIL = "type_email";
 
     public static FirebaseAuth auth() {
         return FirebaseAuth.getInstance();

@@ -29,6 +29,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.moutamid.jiji.BuildConfig;
 import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
+import com.moutamid.jiji.model.LatLng2;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
@@ -107,7 +108,7 @@ public class RegistrationModel {
                                         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
                                             @Override
                                             public void onSuccess(Location location) {
-                                                activity.userModel.current_location = new LatLng(location.getLatitude(), location.getLongitude());
+                                                activity.userModel.current_location = new LatLng2(location.getLatitude(), location.getLongitude());
                                                 if (activity.REGISTER_TYPE.equals(Constants.SIGN_UP)) {
                                                     // SIGN UP
                                                     activity.controller.signUp();

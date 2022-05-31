@@ -155,7 +155,9 @@ public class ItemActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             b.startCountTv.setText("" + snapshot.getChildrenCount());
-                        }
+
+                        } else b.startCountTv.setText("");
+
                     }
 
                     @Override

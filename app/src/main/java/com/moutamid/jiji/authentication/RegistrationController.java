@@ -10,11 +10,16 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
+import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
+import com.moutamid.jiji.utils.Stash;
 
 public class RegistrationController {
     private RegistrationActivity activity;
@@ -97,11 +102,28 @@ public class RegistrationController {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        activity.progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            toast("Login success!");
-                            activity.finish();
-                            activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
+                            Constants.databaseReference()
+                                    .child(Constants.USERS)
+                                    .child(Constants.auth().getUid())
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            activity.progressDialog.dismiss();
+                                            if (snapshot.exists()) {
+                                                toast("Login success!");
+                                                UserModel userModell = snapshot.getValue(UserModel.class);
+                                                Stash.put(Constants.CURRENT_USER_MODEL, userModell);
+
+                                                activity.finish();
+                                                activity.startActivity(new Intent(activity, BottomNavigationActivity.class));     }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         } else {
                             toast(task.getException().getMessage());
                         }
