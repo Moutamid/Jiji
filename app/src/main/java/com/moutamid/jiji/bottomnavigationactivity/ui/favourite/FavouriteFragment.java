@@ -42,6 +42,8 @@ public class FavouriteFragment extends Fragment {
         b = FragmentFavouriteBinding.inflate(inflater, container, false);
         View root = b.getRoot();
 
+        b.trendingRecyclerView.showShimmerAdapter();
+
         Constants.databaseReference()
                 .child(Constants.USERS)
                 .child(Constants.auth().getUid())
@@ -58,9 +60,9 @@ public class FavouriteFragment extends Fragment {
                                 tasksArrayList.add(productModel);
                             }
 
-                            initRecyclerView();
 
                         }
+                        initRecyclerView();
                     }
 
                     @Override
@@ -93,14 +95,12 @@ public class FavouriteFragment extends Fragment {
             conversationRecyclerView.setHasFixedSize(true);
             conversationRecyclerView.setNestedScrollingEnabled(false);
 
+            b.trendingRecyclerView.hideShimmerAdapter();
             conversationRecyclerView.setAdapter(adapter);
         }
-        //    if (adapter.getItemCount() != 0) {
-
-        //        noChatsLayout.setVisibility(View.GONE);
-        //        chatsRecyclerView.setVisibility(View.VISIBLE);
-
-        //    }
+        if (adapter.getItemCount() == 0) {
+            b.noDataImg.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -173,7 +173,7 @@ public class FavouriteFragment extends Fragment {
                 imageView = v.findViewById(R.id.image);
                 title = v.findViewById(R.id.title);
                 city = v.findViewById(R.id.cityName);
-                number = v.findViewById(R.id.number);
+                number = v.findViewById(R.id.price);
                 chatBtn = v.findViewById(R.id.chatBtn);
                 callBtn = v.findViewById(R.id.callBtn);
                 cardView = v.findViewById(R.id.layoutItemProduct);

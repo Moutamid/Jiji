@@ -11,30 +11,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/top_layout_bottom_activity"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/white"
-            android:elevation="20dp">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:text="Profile"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:text="Profile"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.3"
+            android:background="@color/black" />
 
         <EditText
+            android:id="@+id/nameEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/nameEt"
             android:background="@color/white"
             android:text="Moutamid" />
 
@@ -45,12 +44,12 @@
             android:background="@color/grey" />
 
         <EditText
+            android:id="@+id/numberEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:id="@+id/numberEt"
             android:text="03123456789" />
 
         <View
@@ -60,9 +59,9 @@
             android:background="@color/grey" />
 
         <TextView
+            android:id="@+id/emailEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailEt"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:text="moutamid@gmail.com" />
@@ -74,9 +73,9 @@
             android:background="@color/grey" />
 
         <EditText
+            android:id="@+id/passwordEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/passwordEt"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,7 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.jiji.R;
 import com.moutamid.jiji.activities.ConversationActivity;
-import com.moutamid.jiji.databinding.FragmentMessagesBinding;
 import com.moutamid.jiji.model.ChatModel;
 import com.moutamid.jiji.utils.Constants;
 
@@ -36,17 +36,20 @@ public class MessagesFragment extends Fragment {
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
 
-    private FragmentMessagesBinding b;
+    private com.moutamid.jiji.databinding.FragmentMessagesBinding b;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        b = FragmentMessagesBinding.inflate(inflater, container, false);
+        b = com.moutamid.jiji.databinding.FragmentMessagesBinding.inflate(inflater, container, false);
         View root = b.getRoot();
+
+        b.chatsRecyclerview.showShimmerAdapter();
 
         Constants.databaseReference().child("chats").child(Constants.auth().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
+                            initRecyclerView();
                             return;
                         }
 
@@ -64,7 +67,7 @@ public class MessagesFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(requireContext(), error.toException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -72,26 +75,19 @@ public class MessagesFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-
         conversationRecyclerView = b.chatsRecyclerview;
         adapter = new RecyclerViewAdapterMessages();
-        //        LinearLayoutManager layoutManagerUserFriends = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        //    int numberOfColumns = 3;
-        //int mNoOfColumns = calculateNoOfColumns(getApplicationContext(), 50);
-        //  recyclerView.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
         conversationRecyclerView.setLayoutManager(linearLayoutManager);
         conversationRecyclerView.setHasFixedSize(true);
         conversationRecyclerView.setNestedScrollingEnabled(false);
 
+        b.chatsRecyclerview.hideShimmerAdapter();
         conversationRecyclerView.setAdapter(adapter);
 
-        if (adapter.getItemCount() != 0) {
-
-            //        noChatsLayout.setVisibility(View.GONE);
-            //        chatsRecyclerView.setVisibility(View.VISIBLE);
-
+        if (adapter.getItemCount() == 0) {
+            b.noDataImg.setVisibility(View.VISIBLE);
         }
 
     }

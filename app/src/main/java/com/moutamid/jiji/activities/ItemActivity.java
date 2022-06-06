@@ -5,6 +5,8 @@ import static com.moutamid.jiji.utils.Stash.toast;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class ItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         b = ActivityItemBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
 
@@ -104,6 +107,8 @@ public class ItemActivity extends AppCompatActivity {
         b.addressTv.setText(productModel.address);
 
         b.priceTv.setText("KSh " + productModel.price);
+
+        b.postedBy.setText("Posted by: " + productModel.postedBy);
 
         b.makeAnOfferBtn.setOnClickListener(view -> {
             Intent intent = new Intent(ItemActivity.this, ConversationActivity.class);

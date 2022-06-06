@@ -6,10 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".bottomnavigationactivity.ui.favourite.FavouriteFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trendingRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:text="Favourites"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/trendingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:shimmer_demo_angle="20"
+            app:shimmer_demo_child_count="10"
+            app:shimmer_demo_layout="@layout/layout_demo_grid"
+            app:shimmer_demo_layout_manager_type="linear_vertical" />
+
+        <LinearLayout
+            android:id="@+id/noDataImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:src="@drawable/no_data"
+                app:tint="@color/grey" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:alpha="0.4"
+                android:gravity="center"
+                android:text="No favourites found"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

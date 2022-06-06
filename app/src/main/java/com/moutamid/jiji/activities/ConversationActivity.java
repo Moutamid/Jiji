@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.jiji.R;
+import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
@@ -49,9 +50,6 @@ public class ConversationActivity extends AppCompatActivity {
     private CircleImageView profileImageView;
     private TextView usernameTextView;
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +57,6 @@ public class ConversationActivity extends AppCompatActivity {
 
         profileImageView = findViewById(R.id.profile_image_view_conversation_activity);
         usernameTextView = findViewById(R.id.user_name_conversation);
-
-        mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         setBackBtnClickListener();
 
@@ -80,7 +75,7 @@ public class ConversationActivity extends AppCompatActivity {
 //        otherUserImageUrl = getIntent().getStringExtra("url");
         otherUserUid = getIntent().getStringExtra("uid");
 
-        if (getIntent().hasExtra(Constants.PARAMS)){
+        if (getIntent().hasExtra(Constants.PARAMS)) {
             EditText editText = findViewById(R.id.reply_edit_text_activity_conversation);
             editText.setText(getIntent().getStringExtra(Constants.PARAMS));
         }
@@ -96,7 +91,7 @@ public class ConversationActivity extends AppCompatActivity {
 
         initRecyclerView();
 
-        databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("messages").addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,12 +142,12 @@ public class ConversationActivity extends AppCompatActivity {
                                 progressDialog.setMessage("Loading...");
                                 progressDialog.show();
 
-                                databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+                                Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                                         .child(otherUserUid).removeValue()
                                         .addOnCompleteListener(task -> {
                                             if (block) {
-                                                databaseReference.child("chats").child(otherUserUid)
-                                                        .child(mAuth.getCurrentUser().getUid())
+                                                Constants.databaseReference().child("chats").child(otherUserUid)
+                                                        .child(Constants.auth().getCurrentUser().getUid())
                                                         .child("block").setValue(true)
                                                         .addOnCompleteListener(task1 -> {
                                                             progressDialog.dismiss();
@@ -175,7 +170,7 @@ public class ConversationActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("block").addValueEventListener(new ValueEventListener() {
             @Override
@@ -184,7 +179,7 @@ public class ConversationActivity extends AppCompatActivity {
                     new AlertDialog.Builder(ConversationActivity.this)
                             .setMessage("You are blocked by this user!")
                             .setPositiveButton("Delete Chat", (dialogInterface, i) -> {
-                                databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+                                Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                                         .child(otherUserUid).removeValue().addOnCompleteListener(task -> {
                                     finish();
                                 });
@@ -224,7 +219,7 @@ public class ConversationActivity extends AppCompatActivity {
 
             ChatMessage message = new ChatMessage();
             message.setMsgText(replyText);
-            message.setMsgUser(mAuth.getCurrentUser().getUid());
+            message.setMsgUser(Constants.auth().getCurrentUser().getUid());
 
             editText.setText("");
 
@@ -237,14 +232,14 @@ public class ConversationActivity extends AppCompatActivity {
 
     private void uploadMessage(ChatMessage message) {
 
-        databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("messages")
                 .push()
                 .setValue(message);
 
-        databaseReference.child("chats").child(otherUserUid)
-                .child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(otherUserUid)
+                .child(Constants.auth().getCurrentUser().getUid())
                 .child("messages")
                 .push()
                 .setValue(message).addOnFailureListener(new OnFailureListener() {
@@ -257,30 +252,29 @@ public class ConversationActivity extends AppCompatActivity {
 
         // SETTING LAST MESSAGE ON BOTH ACCOUNTS
 
-        databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("lastMcg").setValue(message.getMsgText());
 
-        databaseReference.child("chats").child(otherUserUid)
-                .child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(otherUserUid)
+                .child(Constants.auth().getCurrentUser().getUid())
                 .child("lastMcg").setValue(message.getMsgText());
 
     }
 
     private void uploadOtherUserDetails() {
-        String myName = Stash.getString(
-                "usernameStr");
-//        String myUrl = Stash.getString("profileUrl");
+        UserModel model = (UserModel) Stash.getObject(Constants.CURRENT_USER_MODEL, UserModel.class);
+        String myName = model.name;
 
-        databaseReference.child("chats").child(otherUserUid)
-                .child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(otherUserUid)
+                .child(Constants.auth().getCurrentUser().getUid())
                 .child("name").setValue(myName);
 
         /*databaseReference.child("chats").child(otherUserUid)
                 .child(mAuth.getCurrentUser().getUid())
                 .child("imageUrl").setValue(myUrl);*/
 
-        databaseReference.child("chats").child(mAuth.getCurrentUser().getUid())
+        Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("name").setValue(otherUserName);
 
@@ -388,7 +382,7 @@ public class ConversationActivity extends AppCompatActivity {
             return currentMessagesArrayList.size();
         }
 
-        String uid = mAuth.getCurrentUser().getUid();
+        String uid = Constants.auth().getCurrentUser().getUid();
 
         @Override
         public int getItemViewType(int position) {

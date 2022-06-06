@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layoutItemProduct"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="10dp"
     android:background="@color/white"
-    app:cardElevation="7dp"
     app:cardBackgroundColor="@color/white">
 
     <RelativeLayout
@@ -28,7 +26,7 @@
                     android:layout_width="120dp"
                     android:layout_height="130dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_baseline_upload_file_24" />
+                    android:background="@color/grey2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,7 +41,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="skgf\shdgfh sjfgjdfh jhdgfjdhgf sjdhgfdhgf sjdhfshdgfh sjfgjdfh jhdgfjdhgf sjdhgfdhgf sjdhf"
+                        android:background="@color/grey2"
+                        android:text=""
                         android:textSize="12sp" />
 
                     <LinearLayout
@@ -55,13 +54,15 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_outline_location_on_24" />
+                            android:background="@color/grey2" />
 
                         <TextView
                             android:id="@+id/cityName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Niarobi" />
+                            android:layout_marginStart="5dp"
+                            android:background="@color/grey2"
+                            android:text="                       " />
 
                     </LinearLayout>
 
@@ -74,7 +75,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="KSH"
+                            android:text="     "
+                            android:background="@color/grey2"
                             android:textColor="@color/default_green" />
 
                         <TextView
@@ -82,7 +84,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="7865765"
+                            android:background="@color/grey2"
+                            android:text="                      "
                             android:textColor="@color/default_green" />
 
                     </LinearLayout>
@@ -95,29 +98,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/chatBtn"
+                    android:background="@color/grey2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="1dp"
                     android:layout_weight="1"
-                    android:background="@color/white"
                     android:gravity="center"
                     android:paddingVertical="10dp">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_outline_message_24" />
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="Chat" />
+                         />
 
                 </LinearLayout>
 
@@ -128,42 +132,23 @@
                     android:layout_marginStart="1dp"
                     android:layout_marginTop="1dp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/grey2"
                     android:gravity="center"
                     android:paddingVertical="10dp">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_outline_call_24" />
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="Call" />
+                        />
 
                 </LinearLayout>
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_weight="1"
-                    android:background="@color/skyBlue" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_weight="1"
-                    android:background="@color/default_green" />
 
             </LinearLayout>
 

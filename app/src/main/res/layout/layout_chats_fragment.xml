@@ -36,15 +36,14 @@
                 android:layout_height="wrap_content"
                 android:text="Username"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/last_message_chats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Last message"
-                android:textSize="17sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

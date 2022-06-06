@@ -5,25 +5,27 @@ import static android.view.LayoutInflater.from;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.jiji.R.color.lighterGrey;
-import static com.moutamid.jiji.utils.Stash.toast;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
@@ -34,12 +36,10 @@ import com.moutamid.jiji.activities.ConversationActivity;
 import com.moutamid.jiji.activities.ItemActivity;
 import com.moutamid.jiji.databinding.FragmentHomeBinding;
 import com.moutamid.jiji.model.ProductModel;
-import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class HomeFragment extends Fragment {
 
@@ -51,23 +51,13 @@ public class HomeFragment extends Fragment {
 
         getData(Constants.TYPE_PRODUCT);
 
-        b.trendBtn.setOnClickListener(view -> {
-            b.trendBtn.setCardBackgroundColor(getResources().getColor(R.color.grey));
-            b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
-            b.servicesCatBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
-
-            Collections.shuffle(tasksArrayList);
-            adapter.notifyDataSetChanged();
-
-            int scrollTo = ((View) b.trendingRecyclerView.getParent().getParent()).getTop() + b.trendingRecyclerView.getTop();
-            b.homeScrollView.smoothScrollTo(0, scrollTo);
-        });
-
         b.productsBtn.setOnClickListener(view -> {
             getData(Constants.TYPE_PRODUCT);
-            b.trendBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
-            b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.grey));
-            b.servicesCatBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
+            b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.default_green));
+            b.productsBtnTv.setTextColor(getResources().getColor(R.color.white));
+
+            b.servicesCatBtn.setCardBackgroundColor(getResources().getColor(R.color.grey2));
+            b.servicesCatBtnTv.setTextColor(getResources().getColor(R.color.black));
 
             int scrollTo = ((View) b.trendingRecyclerView.getParent().getParent()).getTop() + b.trendingRecyclerView.getTop();
             b.homeScrollView.smoothScrollTo(0, scrollTo);
@@ -75,19 +65,39 @@ public class HomeFragment extends Fragment {
 
         b.servicesCatBtn.setOnClickListener(view -> {
             getData(Constants.TYPE_SERVICE);
+            b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.grey2));
+            b.productsBtnTv.setTextColor(getResources().getColor(R.color.black));
 
-            b.trendBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
-            b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
-            b.servicesCatBtn.setCardBackgroundColor(getResources().getColor(R.color.grey));
+            b.servicesCatBtn.setCardBackgroundColor(getResources().getColor(R.color.default_green));
+            b.servicesCatBtnTv.setTextColor(getResources().getColor(R.color.white));
 
             int scrollTo = ((View) b.trendingRecyclerView.getParent().getParent()).getTop() + b.trendingRecyclerView.getTop();
             b.homeScrollView.smoothScrollTo(0, scrollTo);
+        });
+
+        b.searchEtHome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (adapter != null)
+                    adapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
 
         return root;
     }
 
     private void getData(String DATA) {
+        b.trendingRecyclerView.showShimmerAdapter();
         Constants.databaseReference()
                 .child(DATA)
                 .addValueEventListener(new ValueEventListener() {
@@ -96,37 +106,39 @@ public class HomeFragment extends Fragment {
                         if (snapshot.exists()) {
 
                             tasksArrayList.clear();
+                            tasksArrayListAll.clear();
+
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 ProductModel productModel = dataSnapshot.getValue(ProductModel.class);
                                 productModel.pushKey = dataSnapshot.getKey();
                                 tasksArrayList.add(productModel);
+                                tasksArrayListAll.add(productModel);
                             }
 
                             initRecyclerView();
+                            b.adsAmountTv.setText(snapshot.getChildrenCount() + " Ads");
+                        } else {
+                            Toast.makeText(requireContext(), "No data exist!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        b.trendingRecyclerView.hideShimmerAdapter();
+                        Toast.makeText(requireContext(), error.toException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private ArrayList<ProductModel> tasksArrayList = new ArrayList<>();
+    private ArrayList<ProductModel> tasksArrayListAll = new ArrayList<>();
 
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
 
     private void initRecyclerView() {
-
         conversationRecyclerView = b.trendingRecyclerView;
-        //conversationRecyclerView.addItemDecoration(new DividerItemDecoration(conversationRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         adapter = new RecyclerViewAdapterMessages();
-        //        LinearLayoutManager layoutManagerUserFriends = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        //    int numberOfColumns = 3;
-        //int mNoOfColumns = calculateNoOfColumns(getApplicationContext(), 50);
-        //  recyclerView.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
         if (isAdded()) {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
             //linearLayoutManager.setReverseLayout(true);
@@ -135,18 +147,12 @@ public class HomeFragment extends Fragment {
             conversationRecyclerView.setNestedScrollingEnabled(false);
 
             conversationRecyclerView.setAdapter(adapter);
+            b.trendingRecyclerView.hideShimmerAdapter();
         }
-        //    if (adapter.getItemCount() != 0) {
-
-        //        noChatsLayout.setVisibility(View.GONE);
-        //        chatsRecyclerView.setVisibility(View.VISIBLE);
-
-        //    }
-
     }
 
     private class RecyclerViewAdapterMessages extends RecyclerView.Adapter
-            <RecyclerViewAdapterMessages.ViewHolderRightMessage> {
+            <RecyclerViewAdapterMessages.ViewHolderRightMessage> implements Filterable {
 
         @NonNull
         @Override
@@ -171,7 +177,7 @@ public class HomeFragment extends Fragment {
 
             holder.title.setText(productModel.name);
             holder.city.setText(productModel.city == null ? "Nairobi" : productModel.city);
-            holder.number.setText(productModel.number);
+            holder.price.setText(productModel.price);
 
             holder.chatBtn.setOnClickListener(view -> {
 
@@ -202,10 +208,51 @@ public class HomeFragment extends Fragment {
             return tasksArrayList.size();
         }
 
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    ArrayList<ProductModel> filteredList = new ArrayList<>();
+
+                    if (constraint == null
+                            || constraint.length() == 0
+                            || constraint.toString().trim().equals("")
+                            || constraint.toString() == null) {
+
+                        filteredList.addAll(tasksArrayListAll);
+                    } else {
+                        String filterPattern = constraint.toString().toLowerCase().trim();
+
+                        for (ProductModel item : tasksArrayListAll) {
+                            if (item.name != null)
+                                if (item.name.toLowerCase().contains(filterPattern)) {
+                                    filteredList.add(item);
+                                }
+                        }
+                    }
+
+                    FilterResults results = new FilterResults();
+                    results.values = filteredList;
+
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    tasksArrayList.clear();
+
+                    tasksArrayList.addAll((ArrayList<ProductModel>) filterResults.values);
+                    notifyDataSetChanged();
+                }
+            };
+
+        }
+
         public class ViewHolderRightMessage extends RecyclerView.ViewHolder {
 
             ImageView imageView;
-            TextView title, city, number;
+            TextView title, city, price;
             LinearLayout chatBtn, callBtn;
             MaterialCardView cardView;
 
@@ -214,7 +261,7 @@ public class HomeFragment extends Fragment {
                 imageView = v.findViewById(R.id.image);
                 title = v.findViewById(R.id.title);
                 city = v.findViewById(R.id.cityName);
-                number = v.findViewById(R.id.number);
+                price = v.findViewById(R.id.price);
                 chatBtn = v.findViewById(R.id.chatBtn);
                 callBtn = v.findViewById(R.id.callBtn);
                 cardView = v.findViewById(R.id.layoutItemProduct);
