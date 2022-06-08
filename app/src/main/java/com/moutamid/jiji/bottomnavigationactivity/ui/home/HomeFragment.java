@@ -1,7 +1,6 @@
 package com.moutamid.jiji.bottomnavigationactivity.ui.home;
 
 import static android.view.LayoutInflater.from;
-
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.jiji.R.color.lighterGrey;
@@ -24,7 +23,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -233,7 +231,7 @@ public class HomeFragment extends Fragment {
 
             new Thread(() -> {
                 tasksArrayList.clear();
-                tasksArrayList = tasksArrayListAll;
+                tasksArrayList.addAll(tasksArrayListAll);
 
                 // CATEGORY
                 for (int i = 0; i <= tasksArrayList.size() - 1; i++) {
@@ -294,9 +292,10 @@ public class HomeFragment extends Fragment {
         b.removeFilterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                b.removeFilterBtn.setVisibility(View.GONE);
                 tasksArrayList.clear();
-                tasksArrayList = tasksArrayListAll;
+                tasksArrayList.addAll(tasksArrayListAll);
+
                 adapter.notifyDataSetChanged();
 
             }
@@ -417,8 +416,9 @@ public class HomeFragment extends Fragment {
             });
 
             holder.callBtn.setOnClickListener(view -> {
-                Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + productModel.number));
-                startActivity(intentDial);
+                Toast.makeText(requireContext(), "" + productModel.number, Toast.LENGTH_SHORT).show();
+//                Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + productModel.number));
+//                startActivity(intentDial);
             });
 
         }

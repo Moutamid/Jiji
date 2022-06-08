@@ -3,6 +3,7 @@ package com.moutamid.jiji.bottomnavigationactivity.ui.sell;
 import static com.moutamid.jiji.utils.Stash.toast;
 
 import com.moutamid.jiji.model.LatLng2;
+import com.moutamid.jiji.model.UserModel;
 import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
@@ -17,7 +18,9 @@ public class SellModel {
         fragment.productModel.location = (LatLng2) Stash.getObject(Constants.USER_LOCATION, LatLng2.class);
         fragment.productModel.city = Stash.getCityName(fragment.productModel.location);
         fragment.productModel.address = Stash.getAddress(fragment.productModel.location);
-        fragment.productModel.number = Stash.getString(Constants.USER_NUMBER);
+        UserModel userModell = (UserModel) Stash.getObject(Constants.CURRENT_USER_MODEL, UserModel.class);
+
+        fragment.productModel.number = userModell.number;
         fragment.productModel.uid = Constants.auth().getUid();
 
         if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT))
@@ -53,10 +56,24 @@ public class SellModel {
             fragment.productModel.price = fragment.b.priceEt.getText().toString();
         }
 
-        if (fragment.productModel.category == null) {
-            toast("Please select a category!");
-            return false;
+        if (fragment.productModel.type.equals(Constants.TYPE_SERVICE)) {
+            if (fragment.b.specialiazationEt.getText().toString().isEmpty()) {
+                toast("Please enter a specialization!");
+                return false;
+            } else {
+                fragment.productModel.category = fragment.b.specialiazationEt.getText().toString();
+            }
         }
+        if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT))
+            if (fragment.productModel.category == null) {
+                toast("Please select a category!");
+                return false;
+            }
+
+        fragment.productModel.image1 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+        fragment.productModel.image2 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+        fragment.productModel.image3 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+
         if (fragment.productModel.image1 == null) {
             toast("Please upload image 1!");
             return false;

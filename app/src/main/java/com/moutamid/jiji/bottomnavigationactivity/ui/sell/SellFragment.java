@@ -49,7 +49,8 @@ public class SellFragment extends Fragment {
             b.modelEt.setVisibility(View.VISIBLE);
             b.conditionEt.setVisibility(View.VISIBLE);
 
-            b.categoryText.setText("Category");
+            b.categoryBtn.setVisibility(View.VISIBLE);
+            b.specialiazationEt.setVisibility(View.GONE);
 
             productModel.type = Constants.TYPE_PRODUCT;
         });
@@ -61,7 +62,8 @@ public class SellFragment extends Fragment {
             b.modelEt.setVisibility(View.GONE);
             b.conditionEt.setVisibility(View.GONE);
 
-            b.categoryText.setText("Specialization");
+            b.categoryBtn.setVisibility(View.GONE);
+            b.specialiazationEt.setVisibility(View.VISIBLE);
 
             productModel.type = Constants.TYPE_SERVICE;
         });

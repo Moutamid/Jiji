@@ -115,8 +115,9 @@ public class RegistrationController {
                                                 UserModel userModell = snapshot.getValue(UserModel.class);
                                                 Stash.put(Constants.CURRENT_USER_MODEL, userModell);
 
+                                                activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
                                                 activity.finish();
-                                                activity.startActivity(new Intent(activity, BottomNavigationActivity.class));     }
+                                            }
                                         }
 
                                         @Override
