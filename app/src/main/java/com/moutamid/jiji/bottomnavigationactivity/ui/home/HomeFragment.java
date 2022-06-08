@@ -6,6 +6,9 @@ import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.jiji.R.color.lighterGrey;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,14 +17,19 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,18 +48,33 @@ import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding b;
 
+    enum SORT {RELEVANT, LOWEST, HIGHEST}
+
+    enum CATEGORY {PRODUCTS, SERVICES}
+
+    SORT sortType = SORT.RELEVANT;
+    CATEGORY categoryType = CATEGORY.PRODUCTS;
+    private ProgressDialog progressDialog;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         b = FragmentHomeBinding.inflate(inflater, container, false);
         View root = b.getRoot();
 
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+
         getData(Constants.TYPE_PRODUCT);
 
         b.productsBtn.setOnClickListener(view -> {
+            categoryType = CATEGORY.PRODUCTS;
             getData(Constants.TYPE_PRODUCT);
             b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.default_green));
             b.productsBtnTv.setTextColor(getResources().getColor(R.color.white));
@@ -64,6 +87,7 @@ public class HomeFragment extends Fragment {
         });
 
         b.servicesCatBtn.setOnClickListener(view -> {
+            categoryType = CATEGORY.SERVICES;
             getData(Constants.TYPE_SERVICE);
             b.productsBtn.setCardBackgroundColor(getResources().getColor(R.color.grey2));
             b.productsBtnTv.setTextColor(getResources().getColor(R.color.black));
@@ -91,6 +115,204 @@ public class HomeFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
 
             }
+        });
+
+        Dialog dialog = new Dialog(requireActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_layout_search);
+        dialog.setCancelable(true);
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+        dialog.findViewById(R.id.closeDialogBtn).setOnClickListener(view1 -> {
+            dialog.dismiss();
+        });
+
+        TextView categoryText = dialog.findViewById(R.id.categoryText);
+        TextView sortText = dialog.findViewById(R.id.sortText);
+        EditText specializationEt = dialog.findViewById(R.id.specialiazationEt);
+
+        dialog.findViewById(R.id.categoryBtn).setOnClickListener(v -> {
+            AlertDialog dialog1;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+            final CharSequence[] items = new CharSequence[]{
+                    "Toyota", "Nissan", "Honda", "Mazda", "Suzuki",
+                    "BMW", "LEXUS", "AUDI", "Land rover", "Mercedes Benz", "Mitsubishi", "Isuzu", "Hino",
+                    "Chevloret", "Volkswagen", "Jeep", "Subaru", "Porsche"};
+
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int position) {
+                    categoryText.setText(items[position].toString());
+
+                    /*progressDialog.show();
+
+                    new Thread(() -> {
+                        tasksArrayList.clear();
+                        tasksArrayList = tasksArrayListAll;
+
+                        for (int i = 0; i <= tasksArrayList.size() - 1; i++) {
+                            ProductModel model1 = tasksArrayList.get(i);
+                            if (!model1.category.equals(items[position].toString())) {
+                                tasksArrayList.remove(i);
+                            }
+
+                        }
+
+                        requireActivity().runOnUiThread(() -> {
+                            progressDialog.dismiss();
+                        });
+
+                    }).start();*/
+                }
+            });
+
+            dialog1 = builder.create();
+            dialog1.show();
+        });
+
+        dialog.findViewById(R.id.sortBtn).setOnClickListener(v -> {
+            AlertDialog dialog1;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+            final CharSequence[] items = new CharSequence[]{
+                    "Relevant", "Lowest price", "Highest price"};
+
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int position) {
+                    sortText.setText(items[position]);
+                    if (position == 0) {
+                        sortType = SORT.RELEVANT;
+                    }
+                    if (position == 1) {
+                        sortType = SORT.LOWEST;
+                    }
+                    if (position == 2) {
+                        sortType = SORT.HIGHEST;
+                    }
+                }
+            });
+
+            dialog1 = builder.create();
+            dialog1.show();
+        });
+
+        dialog.findViewById(R.id.doneBtnDialog).setOnClickListener(view -> {
+            if (categoryType == CATEGORY.PRODUCTS) {
+                if (categoryText.equals("Category")) {
+                    Toast.makeText(requireContext(), "Please select a category!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } else {
+                if (specializationEt.getText().toString().isEmpty()) {
+                    Toast.makeText(requireContext(), "Please type a specialization!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            EditText priceMin = dialog.findViewById(R.id.priceMin);
+            EditText priceMax = dialog.findViewById(R.id.priceMax);
+
+            if (priceMin.getText().toString().isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter minimum price!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (priceMin.getText().toString().isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter maximum price!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            progressDialog.show();
+
+            new Thread(() -> {
+                tasksArrayList.clear();
+                tasksArrayList = tasksArrayListAll;
+
+                // CATEGORY
+                for (int i = 0; i <= tasksArrayList.size() - 1; i++) {
+                    ProductModel model1 = tasksArrayList.get(i);
+                    if (!model1.category.equals(categoryText.getText().toString())) {
+                        tasksArrayList.remove(i);
+                    }
+                }
+
+                // PRICE MINIMUM
+                for (int i = 0; i <= tasksArrayList.size() - 1; i++) {
+                    ProductModel model1 = tasksArrayList.get(i);
+                    if (Integer.parseInt(model1.price) < Integer.parseInt(priceMin.getText().toString())) {
+                        tasksArrayList.remove(i);
+                    }
+                }
+
+                // PRICE MAXIMUM
+                for (int i = 0; i <= tasksArrayList.size() - 1; i++) {
+                    ProductModel model1 = tasksArrayList.get(i);
+                    if (Integer.parseInt(model1.price) > Integer.parseInt(priceMax.getText().toString())) {
+                        tasksArrayList.remove(i);
+                    }
+                }
+
+                if (sortType == SORT.RELEVANT) {
+                    Collections.shuffle(tasksArrayList);
+                }
+                if (sortType == SORT.LOWEST) {
+                    Collections.sort(tasksArrayList, new Comparator<ProductModel>() {
+                        @Override
+                        public int compare(ProductModel productModel, ProductModel t1) {
+                            return productModel.price.compareTo(t1.price);
+                        }
+                    });
+                }
+                if (sortType == SORT.HIGHEST) {
+                    Collections.sort(tasksArrayList, new Comparator<ProductModel>() {
+                        @Override
+                        public int compare(ProductModel productModel, ProductModel t1) {
+                            return productModel.price.compareTo(t1.price);
+                        }
+                    });
+                    Collections.reverse(tasksArrayList);
+                }
+
+                requireActivity().runOnUiThread(() -> {
+                    b.adsAmountTv.setText(adapter.getItemCount() + " Ads");
+                    b.removeFilterBtn.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+                    adapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                });
+
+            }).start();
+        });
+
+        b.removeFilterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tasksArrayList.clear();
+                tasksArrayList = tasksArrayListAll;
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+        b.menuBtnHome.setOnClickListener(view -> {
+            if (categoryType == CATEGORY.SERVICES) {
+                dialog.findViewById(R.id.categoryBtn).setVisibility(View.GONE);
+                specializationEt.setVisibility(View.VISIBLE);
+            } else {
+                dialog.findViewById(R.id.categoryBtn).setVisibility(View.VISIBLE);
+                specializationEt.setVisibility(View.GONE);
+            }
+
+            dialog.show();
+            dialog.getWindow().setAttributes(layoutParams);
         });
 
         return root;

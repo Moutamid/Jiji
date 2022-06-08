@@ -46,6 +46,11 @@ public class SellFragment extends Fragment {
             b.productButton.setBackgroundColor(getResources().getColor(R.color.default_green));
             b.servicesBtn.setBackgroundColor(getResources().getColor(R.color.darkerGrey));
 
+            b.modelEt.setVisibility(View.VISIBLE);
+            b.conditionEt.setVisibility(View.VISIBLE);
+
+            b.categoryText.setText("Category");
+
             productModel.type = Constants.TYPE_PRODUCT;
         });
 
@@ -53,18 +58,31 @@ public class SellFragment extends Fragment {
             b.servicesBtn.setBackgroundColor(getResources().getColor(R.color.default_green));
             b.productButton.setBackgroundColor(getResources().getColor(R.color.darkerGrey));
 
-            productModel.type = Constants.TYPE_SERVICE;
+            b.modelEt.setVisibility(View.GONE);
+            b.conditionEt.setVisibility(View.GONE);
 
+            b.categoryText.setText("Specialization");
+
+            productModel.type = Constants.TYPE_SERVICE;
         });
 
         b.categoryBtn.setOnClickListener(view -> {
             AlertDialog dialog;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            final CharSequence[] items = {
-                    "Toyota", "Nissan", "Honda", "Mazda", "Suzuki",
-                    "BMW", "LEXUS", "AUDI", "Land rover", "Mercedes Benz", "Mitsubishi", "Isuzu", "Hino",
-                    "Chevloret", "Volkswagen", "Jeep", "Subaru", "Porsche"};
+
+            final CharSequence[] items;
+            if (b.categoryText.getText().toString().equals("Category")) {
+                items = new CharSequence[]{
+                        "Toyota", "Nissan", "Honda", "Mazda", "Suzuki",
+                        "BMW", "LEXUS", "AUDI", "Land rover", "Mercedes Benz", "Mitsubishi", "Isuzu", "Hino",
+                        "Chevloret", "Volkswagen", "Jeep", "Subaru", "Porsche"};
+            } else {
+                items = new CharSequence[]{
+                        "Specialization 1", "Specialization 2", "Specialization 3",
+                        "Specialization 4", "Specialization 5"
+                };
+            }
 
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 @Override

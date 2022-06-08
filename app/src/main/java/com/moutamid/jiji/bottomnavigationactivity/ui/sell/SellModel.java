@@ -20,12 +20,20 @@ public class SellModel {
         fragment.productModel.number = Stash.getString(Constants.USER_NUMBER);
         fragment.productModel.uid = Constants.auth().getUid();
 
-        if (fragment.b.conditionEt.getText().toString().isEmpty()) {
-            toast("Condition is empty!");
-            return false;
-        } else {
-            fragment.productModel.condition = fragment.b.conditionEt.getText().toString();
-        }
+        if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT))
+            if (fragment.b.modelEt.getText().toString().isEmpty()) {
+                toast("Model is empty!");
+                return false;
+            } else {
+                fragment.productModel.model = fragment.b.modelEt.getText().toString();
+            }
+        if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT))
+            if (fragment.b.conditionEt.getText().toString().isEmpty()) {
+                toast("Condition is empty!");
+                return false;
+            } else {
+                fragment.productModel.condition = fragment.b.conditionEt.getText().toString();
+            }
         if (fragment.b.nameEt.getText().toString().isEmpty()) {
             toast("Name is empty!");
             return false;

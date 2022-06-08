@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.moutamid.jiji.utils.Constants;
 import com.moutamid.jiji.utils.Stash;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ItemActivity extends AppCompatActivity {
     private ActivityItemBinding b;
@@ -146,6 +148,19 @@ public class ItemActivity extends AppCompatActivity {
             intent.putExtra(Constants.PARAMS, "Please call me on my number: " + userModel.number);
 
             startActivity(intent);
+        });
+
+        b.openMapBtn.setOnClickListener(view -> {
+            try {
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", productModel.location.latitude, productModel.location.longitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(ItemActivity.this,
+                                e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
         });
 
     }

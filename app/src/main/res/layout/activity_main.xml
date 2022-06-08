@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -119,22 +119,21 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/buyerBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                app:rippleColor="@color/white"
-                android:id="@+id/buyerBtn"
                 android:layout_weight="1"
                 android:text="Buyer"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/default_green"
                 app:cornerRadius="0dp"
-                app:elevation="0dp" />
+                app:elevation="0dp"
+                app:rippleColor="@color/white" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                app:rippleColor="@color/white"
                 android:id="@+id/sellerBtn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
@@ -143,6 +142,7 @@
                 app:backgroundTint="@color/white"
                 app:cornerRadius="0dp"
                 app:elevation="0dp"
+                app:rippleColor="@color/white"
                 app:strokeColor="@color/default_green"
                 app:strokeWidth="2dp" />
 
@@ -155,7 +155,8 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <View
             android:layout_width="0dp"
