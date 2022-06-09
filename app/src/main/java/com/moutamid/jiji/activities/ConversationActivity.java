@@ -1,7 +1,11 @@
 package com.moutamid.jiji.activities;
 
+import static com.moutamid.jiji.utils.Stash.toast;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -231,7 +235,6 @@ public class ConversationActivity extends AppCompatActivity {
     }
 
     private void uploadMessage(ChatMessage message) {
-
         Constants.databaseReference().child("chats").child(Constants.auth().getCurrentUser().getUid())
                 .child(otherUserUid)
                 .child("messages")
@@ -291,6 +294,35 @@ public class ConversationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.call_conversation_activity).setOnClickListener(view -> {
+            ProgressDialog progressDialog;
+            progressDialog = new ProgressDialog(ConversationActivity.this);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+            Constants.databaseReference()
+                    .child(Constants.USERS)
+                    .child(otherUserUid)
+                    .child("number")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            progressDialog.dismiss();
+                            if (snapshot.exists()) {
+                                Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + snapshot.getValue(String.class)));
+                                startActivity(intentDial);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            toast(error.toException().getMessage());
+                            progressDialog.dismiss();
+                        }
+                    });
+        });
+
     }
 
     private void initRecyclerView() {

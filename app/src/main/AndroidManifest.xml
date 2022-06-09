@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jiji">
         <activity
+            android:name=".activities.MyAdsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ItemActivity"
             android:exported="false" />
         <activity
@@ -28,7 +31,7 @@
         </activity>
         <activity
             android:name=".bottomnavigationactivity.HomeActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".authentication.RegistrationActivity"
             android:exported="false" />

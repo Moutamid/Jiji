@@ -1,5 +1,7 @@
 package com.moutamid.jiji.utils;
 
+import android.app.ProgressDialog;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,4 +37,5 @@ public class Constants {
         db.keepSynced(true);
         return db;
     }
+
 }

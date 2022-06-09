@@ -416,9 +416,9 @@ public class HomeFragment extends Fragment {
             });
 
             holder.callBtn.setOnClickListener(view -> {
-                Toast.makeText(requireContext(), "" + productModel.number, Toast.LENGTH_SHORT).show();
-//                Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + productModel.number));
-//                startActivity(intentDial);
+//                Toast.makeText(requireContext(), "" + productModel.number, Toast.LENGTH_SHORT).show();
+                Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + productModel.number));
+                startActivity(intentDial);
             });
 
         }

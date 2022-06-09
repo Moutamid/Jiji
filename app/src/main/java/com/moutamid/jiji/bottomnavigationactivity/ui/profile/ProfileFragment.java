@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.moutamid.jiji.activities.MyAdsActivity;
 import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.databinding.FragmentProfileBinding;
 import com.moutamid.jiji.model.UserModel;
@@ -41,7 +42,7 @@ public class ProfileFragment extends Fragment {
         b.passwordEt.addTextChangedListener(passwordTextChangeListener());
 
         b.myAdsBtn.setOnClickListener(view -> {
-
+            startActivity(new Intent(requireActivity(), MyAdsActivity.class));
         });
 
         b.logout.setOnClickListener(view -> {
@@ -54,7 +55,6 @@ public class ProfileFragment extends Fragment {
         });
 
         b.doneBtn.setOnClickListener(view -> {
-
             if (b.passwordEt.getText().toString().isEmpty())
                 return;
 
@@ -77,7 +77,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private TextWatcher textChangeListener(String et) {
-
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
