@@ -94,7 +94,8 @@ public class MyAdsActivity extends AppCompatActivity {
                                     });
 
                         } else {
-                            Toast.makeText(MyAdsActivity.this, "No data exist!", Toast.LENGTH_SHORT).show();
+                            initRecyclerView();
+//                            Toast.makeText(MyAdsActivity.this, "No data exist!", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -121,8 +122,16 @@ public class MyAdsActivity extends AppCompatActivity {
         conversationRecyclerView.setHasFixedSize(true);
         conversationRecyclerView.setNestedScrollingEnabled(false);
 
-        conversationRecyclerView.setAdapter(adapter);
         b.adsRecyclerView.hideShimmerAdapter();
+        conversationRecyclerView.setAdapter(adapter);
+
+        if (adapter.getItemCount() == 0) {
+            conversationRecyclerView.setVisibility(View.GONE);
+            b.noDataImg.setVisibility(View.VISIBLE);
+        } else {
+            conversationRecyclerView.setVisibility(View.VISIBLE);
+            b.noDataImg.setVisibility(View.GONE);
+        }
 
     }
 

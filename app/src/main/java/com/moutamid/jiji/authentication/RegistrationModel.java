@@ -27,6 +27,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.moutamid.jiji.BuildConfig;
+import com.moutamid.jiji.activities.VerifyEmailActivity;
 import com.moutamid.jiji.bottomnavigationactivity.BottomNavigationActivity;
 import com.moutamid.jiji.bottomnavigationactivity.HomeActivity;
 import com.moutamid.jiji.model.LatLng2;
@@ -197,8 +198,10 @@ public class RegistrationModel {
                         activity.progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             toast("Sign up success!");
-                            activity.finish();
-                            activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
+//                            activity.finish();
+                            activity.startActivity(new Intent(activity, VerifyEmailActivity.class)
+                                    .putExtra(Constants.PARAMS, activity.userModel.email));
+//                            activity.startActivity(new Intent(activity, BottomNavigationActivity.class));
                         } else {
                             toast(task.getException().getMessage());
                         }

@@ -105,8 +105,12 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (requestCode == CODE_ID_CARD || requestCode == CODE_TAX_CTF
                 || requestCode == CODE_REGISTRATION_CTF && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
-            controller.uploadImage(requestCode, imageUri);
+            if (data != null) {
+                if (data.getData() != null) {
+                    Uri imageUri = data.getData();
+                    controller.uploadImage(requestCode, imageUri);
+                }
+            }
         }
     }
 }

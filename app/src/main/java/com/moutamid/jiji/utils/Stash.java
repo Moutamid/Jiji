@@ -264,7 +264,7 @@ public class Stash {
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
             city = addresses.get(0).getLocality();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

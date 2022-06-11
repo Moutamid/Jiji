@@ -70,9 +70,9 @@ public class SellModel {
                 return false;
             }
 
-        fragment.productModel.image1 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
-        fragment.productModel.image2 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
-        fragment.productModel.image3 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+//        fragment.productModel.image1 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+//        fragment.productModel.image2 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+//        fragment.productModel.image3 = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
 
         if (fragment.productModel.image1 == null) {
             toast("Please upload image 1!");

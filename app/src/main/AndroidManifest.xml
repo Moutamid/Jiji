@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jiji">
         <activity
+            android:name=".activities.VerifyEmailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MyAdsActivity"
             android:exported="false" />
         <activity
