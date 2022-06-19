@@ -177,27 +177,48 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Model"
-                                android:inputType="number"
+                                android:inputType="textPersonName"
                                 android:maxLines="1" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/conditionBtn"
+                            android:layout_marginTop="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="10dp"
-                            android:layout_marginTop="10dp">
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="0dp"
+                            app:strokeColor="@color/greyishblue"
+                            app:strokeWidth="1dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/condition_et"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Condition"
-                                android:inputType="text"
-                                android:maxLines="1" />
+                                android:layout_height="wrap_content">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <TextView
+                                    android:id="@+id/conditionText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginTop="15dp"
+                                    android:layout_marginEnd="15dp"
+                                    android:layout_marginBottom="15dp"
+                                    android:text="Condition" />
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="20dp"
+                                    android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
@@ -222,11 +243,13 @@
                             android:layout_height="50dp"
                             android:layout_marginStart="10dp"
                             android:background="@color/grey"
+                            android:visibility="gone"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_baseline_upload_24" />
 
                         <ImageView
                             android:id="@+id/image3"
+                            android:visibility="gone"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginStart="10dp"

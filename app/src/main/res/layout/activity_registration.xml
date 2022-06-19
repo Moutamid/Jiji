@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
-                        android:text="Upload ID Card" />
+                        android:text="Upload ID Card (Optional)" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
-                        android:text="Upload Tax Certificate" />
+                        android:text="Upload Tax Certificate (Optional)" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -227,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
-                        android:text="Upload Registration Certificate (If Company)" />
+                        android:text="Upload Registration Certificate (If Company) (Optional)" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

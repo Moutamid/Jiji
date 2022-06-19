@@ -66,12 +66,13 @@ public class RegistrationModel {
 
             if (activity.userModel.user_type.equals(Constants.TYPE_SELLER)) {
                 if (activity.userModel.id_card_link == null) {
-                    toast("Please upload a id card!");
-                    return false;
+                    activity.userModel.id_card_link = Constants.NULL;
                 }
                 if (activity.userModel.tax_certificate_link == null) {
-                    toast("Please upload a tax certificate!");
-                    return false;
+                    activity.userModel.tax_certificate_link = Constants.NULL;
+                }
+                if (activity.userModel.registration_certificate_link == null) {
+                    activity.userModel.registration_certificate_link = Constants.NULL;
                 }
 
             }

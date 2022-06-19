@@ -15,10 +15,25 @@ public class SellModel {
     }
 
     public boolean isEveryThingCompleted() {
+        UserModel userModell = (UserModel) Stash.getObject(Constants.CURRENT_USER_MODEL, UserModel.class);
+
+        if (userModell.user_type.equals(Constants.TYPE_BUYER)){
+            // FIRST UPLOAD DOCUMENTS
+            fragment.uploadDocumentsController.showDocumentDialog();
+            return false;
+        }
+        if (userModell.tax_certificate_link.equals(Constants.NULL) ||
+                userModell.id_card_link.equals(Constants.NULL) ||
+                userModell.registration_certificate_link.equals(Constants.NULL)){
+            // FIRST UPLOAD THE DOCUMENTS
+            fragment.uploadDocumentsController.showDocumentDialog();
+            return false;
+
+        }
+
         fragment.productModel.location = (LatLng2) Stash.getObject(Constants.USER_LOCATION, LatLng2.class);
         fragment.productModel.city = Stash.getCityName(fragment.productModel.location);
         fragment.productModel.address = Stash.getAddress(fragment.productModel.location);
-        UserModel userModell = (UserModel) Stash.getObject(Constants.CURRENT_USER_MODEL, UserModel.class);
 
         fragment.productModel.number = userModell.number;
         fragment.productModel.uid = Constants.auth().getUid();
@@ -30,13 +45,12 @@ public class SellModel {
             } else {
                 fragment.productModel.model = fragment.b.modelEt.getText().toString();
             }
-        if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT))
-            if (fragment.b.conditionEt.getText().toString().isEmpty()) {
-                toast("Condition is empty!");
+        if (fragment.productModel.type.equals(Constants.TYPE_PRODUCT)) {
+            if (fragment.productModel.condition == null) {
+                toast("Please select a condition!");
                 return false;
-            } else {
-                fragment.productModel.condition = fragment.b.conditionEt.getText().toString();
             }
+        }
         if (fragment.b.nameEt.getText().toString().isEmpty()) {
             toast("Name is empty!");
             return false;

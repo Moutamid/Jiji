@@ -5,6 +5,7 @@ import static com.moutamid.jiji.utils.Stash.toast;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -23,6 +24,7 @@ public class SellController {
     public void startGalleryIntent(int CODE) {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
+        galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         fragment.startActivityForResult(galleryIntent, CODE);
     }
 
@@ -38,16 +40,19 @@ public class SellController {
                     progressDialog.dismiss();
 
                     if (requestCode == fragment.CODE_IMAGE_1) {
+                        fragment.b.image1.setVisibility(View.VISIBLE);
                         fragment.b.image1.setImageURI(imageUri);
                         fragment.productModel.image1 = photoUrl.toString();
                     }
 
                     if (requestCode == fragment.CODE_IMAGE_2) {
+                        fragment.b.image2.setVisibility(View.VISIBLE);
                         fragment.b.image2.setImageURI(imageUri);
                         fragment.productModel.image2 = photoUrl.toString();
                     }
 
                     if (requestCode == fragment.CODE_IMAGE_3) {
+                        fragment.b.image3.setVisibility(View.VISIBLE);
                         fragment.b.image3.setImageURI(imageUri);
                         fragment.productModel.image3 = photoUrl.toString();
                     }
